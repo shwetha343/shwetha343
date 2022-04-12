@@ -1,18 +1,18 @@
 pipeline {
     agent any 
     environment {
-    DOCKERHUB_CREDENTIALS = credentials('valaxy-dockerhub')
+    DOCKERHUB_CREDENTIALS = credentials('jenkins_docker_id')
     }
     stages { 
         stage('SCM Checkout') {
             steps{
-            git 'https://github.com/shwetha343/shwetha343.git'
+            git credentialsId: 'GitHubId', url: 'https://github.com/shwetha343/shwetha343.git'
             }
         }
 
         stage('Build docker image') {
             steps {  
-                sh 'docker build -t valaxy/nodeapp:$BUILD_NUMBER .'
+                sh 'docker build -t shwetha/nodeapp:$BUILD_NUMBER .'
             }
         }
         stage('login to dockerhub') {
@@ -22,7 +22,7 @@ pipeline {
         }
         stage('push image') {
             steps{
-                sh 'docker push valaxy/nodeapp:$BUILD_NUMBER'
+                sh 'docker push shwetha/nodeapp:$BUILD_NUMBER'
             }
         }
 }
@@ -32,4 +32,3 @@ post {
         }
     }
 }
-
